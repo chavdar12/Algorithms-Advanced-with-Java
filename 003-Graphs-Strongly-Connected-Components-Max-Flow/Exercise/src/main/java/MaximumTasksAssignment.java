@@ -97,7 +97,7 @@ public class MaximumTasksAssignment {
                 if (graph[persons + j][i]) //back edge from j-th task to i-th person, so there is flow there
                     result.append((char) ('A' + i)).append('-').append(j + 1).append('\n'); //j -> j+1, renumber tasks
 
-        System.out.println(result);
+        System.out.print(result);
     }
 }
 

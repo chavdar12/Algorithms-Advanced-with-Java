@@ -1,7 +1,8 @@
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Random;
 
 public class DijkstraTests {
 
@@ -39,8 +40,8 @@ public class DijkstraTests {
             resultPath[i] = path.get(i);
         }
 
-        Assert.assertEquals(expectedLength, length);
-        Assert.assertArrayEquals(expectedPath, resultPath);
+        Assertions.assertEquals(expectedLength, length);
+        Assertions.assertArrayEquals(expectedPath, resultPath);
     }
 
     @Test
@@ -60,15 +61,15 @@ public class DijkstraTests {
             resultPath[i] = path.get(i);
         }
 
-        Assert.assertEquals(expectedLength, length);
-        Assert.assertArrayEquals(expectedPath, resultPath);
+        Assertions.assertEquals(expectedLength, length);
+        Assertions.assertArrayEquals(expectedPath, resultPath);
     }
 
     @Test
     public void FindPathBetween0And10() {
         List<Integer> path = Dijkstra.dijkstraAlgorithm(GRAPH, 0, 10);
 
-        Assert.assertNull(path);
+        Assertions.assertNull(path);
     }
 
     @Test
@@ -89,8 +90,8 @@ public class DijkstraTests {
             resultPath[i] = path.get(i);
         }
 
-        Assert.assertEquals(expectedLength, length);
-        Assert.assertArrayEquals(expectedPath, resultPath);
+        Assertions.assertEquals(expectedLength, length);
+        Assertions.assertArrayEquals(expectedPath, resultPath);
     }
 
     @Test
@@ -111,7 +112,49 @@ public class DijkstraTests {
             resultPath[i] = path.get(i);
         }
 
-        Assert.assertEquals(expectedLength, length);
-        Assert.assertArrayEquals(expectedPath, resultPath);
+        Assertions.assertEquals(expectedLength, length);
+        Assertions.assertArrayEquals(expectedPath, resultPath);
+    }
+
+    @Test
+    public void matchesFloydWarshallOnRandomGraphs() {
+        Random random = new Random(1);
+        for (int run = 0; run < 500; run++) {
+            int n = 2 + random.nextInt(8);
+            int[][] graph = new int[n][n];
+            long[][] expected = new long[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
+                    if (random.nextInt(3) == 0) {
+                        graph[i][j] = graph[j][i] = 1 + random.nextInt(20);
+                    }
+                }
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    expected[i][j] = i == j ? 0 : graph[i][j] == 0 ? Integer.MAX_VALUE : graph[i][j];
+                }
+            }
+            for (int k = 0; k < n; k++) {
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        expected[i][j] = Math.min(expected[i][j], expected[i][k] + expected[k][j]);
+                    }
+                }
+            }
+
+            for (int destination = 1; destination < n; destination++) {
+                List<Integer> path = Dijkstra.dijkstraAlgorithm(graph, 0, destination);
+                if (expected[0][destination] == Integer.MAX_VALUE) {
+                    Assertions.assertNull(path);
+                    continue;
+                }
+                long length = 0;
+                for (int i = 1; i < path.size(); i++) {
+                    length += graph[path.get(i - 1)][path.get(i)];
+                }
+                Assertions.assertEquals(expected[0][destination], length);
+            }
+        }
     }
 }

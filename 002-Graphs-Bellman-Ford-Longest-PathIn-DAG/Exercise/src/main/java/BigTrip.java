@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public class BigTrip {
 
-    public static List<int[]> edges = new ArrayList<>();
     public static int[][] graph;
     public static boolean[] visited;
 
@@ -30,8 +29,6 @@ public class BigTrip {
             int weight = nextLine[2];
 
             graph[source][dest] = weight;
-            edges.add(new int[]{source, dest});
-
         }
 
         int source = Integer.parseInt(rd.readLine());
@@ -54,12 +51,15 @@ public class BigTrip {
         int[] prev = new int[nodes + 1];
         Arrays.fill(prev, -1);
 
-        for (Integer sortedNode : sortedNodes) {
+        for (int from : sortedNodes) {
 
-            for (int[] edge : edges) {
+            if (distances[from] == Integer.MIN_VALUE) {
 
-                int from = edge[0];
-                int to = edge[1];
+                continue;
+            }
+
+            for (int to = 1; to < graph[from].length; to++) {
+
                 int weight = graph[from][to];
 
                 if (weight != 0) {

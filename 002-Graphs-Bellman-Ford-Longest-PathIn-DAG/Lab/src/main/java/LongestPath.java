@@ -51,6 +51,9 @@ public class LongestPath {
         while (!sorted.isEmpty()) {
 
             int node = sorted.pop();
+            if (distance[node] == Integer.MIN_VALUE) {
+                continue;
+            }
             for (int i = 1; i < graph[node].length; i++) {
                 int weight = graph[node][i];
                 if (weight != 0) {

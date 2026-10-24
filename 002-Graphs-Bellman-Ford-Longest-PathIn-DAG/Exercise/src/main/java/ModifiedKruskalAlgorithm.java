@@ -3,9 +3,7 @@ import java.util.stream.Collectors;
 
 public class ModifiedKruskalAlgorithm {
 
-    public static Map<Integer, List<Edge>> graph = new LinkedHashMap<>();
-
-    public static int cost = 0;
+    public static Map<Integer, List<Edge>> graph;
 
     public static class Edge implements Comparable<Edge> {
 
@@ -31,6 +29,7 @@ public class ModifiedKruskalAlgorithm {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        graph = new LinkedHashMap<>();
 
         int nodes = Integer.parseInt(sc.nextLine().split("\\s+")[1]);
         int edgeCount = Integer.parseInt(sc.nextLine().split("\\s+")[1]);
@@ -50,8 +49,6 @@ public class ModifiedKruskalAlgorithm {
         }
 
         int[] parents = new int[nodes];
-
-        Arrays.fill(parents, -1);
 
         PriorityQueue<Edge> edges = graph.values().stream().flatMap(List::stream)
                 .collect(Collectors.toCollection(PriorityQueue::new));
@@ -74,14 +71,6 @@ public class ModifiedKruskalAlgorithm {
 
                 forestWeight += minEdge.weight;
                 parents[secondRoot] = firstRoot;
-
-                for (int i = 0; i < parents.length; i++) {
-
-                    if (parents[i] == secondRoot) {
-
-                        parents[i] = firstRoot;
-                    }
-                }
             }
         }
 
@@ -90,14 +79,12 @@ public class ModifiedKruskalAlgorithm {
 
     private static int findRoot(int node, int[] parents) {
 
-        int root = parents[node];
+        while (parents[node] != node) {
 
-        while (parents[node] != root) {
-
-            root = parents[root];
+            node = parents[node];
         }
 
-        return root;
+        return node;
     }
 }
 

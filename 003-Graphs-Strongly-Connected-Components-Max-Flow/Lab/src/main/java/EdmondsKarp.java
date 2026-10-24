@@ -10,8 +10,6 @@ public class EdmondsKarp {
         graph = targetGraph;
         parents = new int[graph.length];
 
-        Arrays.fill(parents, -1);
-
         int maxFlow = 0;
 
         while (bfs()) {

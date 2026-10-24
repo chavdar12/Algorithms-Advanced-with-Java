@@ -73,10 +73,16 @@ public class FindBiConnectedComponents {
         depths = new int[nodes];
         lowPoints = new int[nodes];
         parents = new int[nodes];
-        parents[0] = -1;
         result = new ArrayList<>(nodes);
 
-        dfs(0, 1, new ArrayList<>(nodes));
+        for (int node = 0; node < nodes; node++) {
+
+            if (depths[node] == 0) {
+
+                parents[node] = -1;
+                dfs(node, 1, new ArrayList<>(nodes));
+            }
+        }
 
         System.out.println("Number of bi-connected components: " + result.size());
     }

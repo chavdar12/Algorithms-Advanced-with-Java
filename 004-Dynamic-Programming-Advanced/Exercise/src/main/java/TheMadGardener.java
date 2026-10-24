@@ -31,7 +31,7 @@ public class TheMadGardener {
 
         int[] reversed = new int[plants.length];
 
-        for (int i = 1; i < input.length; i++) {
+        for (int i = 1; i < plants.length; i++) {
 
             reversed[i] = plants[(plants.length - 1) - i + 1];
         }
@@ -48,10 +48,12 @@ public class TheMadGardener {
 
             int size = firstLIS[i].size + secondLIS[end - i + 1].size;
 
-            if (size >= maxSize) {
+            int sum = firstLIS[i].sum + secondLIS[end - i + 1].sum - plants[i];
+
+            if (size > maxSize || (size == maxSize && sum > maxSum)) {
 
                 maxSize = size;
-                maxSum = firstLIS[i].sum + secondLIS[end - i + 1].sum - plants[i];
+                maxSum = sum;
                 peek = i;
             }
         }
@@ -111,7 +113,7 @@ public class TheMadGardener {
                             && LIS[j].sum + plants[i] > LIS[i].sum)) {
 
                         LIS[i].sum = LIS[j].sum + plants[i];
-                        LIS[i].size = LIS[i].size + 1;
+                        LIS[i].size = LIS[j].size + 1;
                         LIS[i].prev = j;
                     }
                 }

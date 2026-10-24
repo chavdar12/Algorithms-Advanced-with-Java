@@ -21,7 +21,11 @@ public class ArticulationPoints {
 
         Arrays.fill(parents, -1);
 
-        discoverArticulationPoints(0, 1);
+        for (int node = 0; node < graph.length; node++) {
+            if (!visited[node]) {
+                discoverArticulationPoints(node, 1);
+            }
+        }
 
         return points;
     }

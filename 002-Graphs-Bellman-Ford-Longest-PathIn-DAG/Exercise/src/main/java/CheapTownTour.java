@@ -3,7 +3,7 @@ import java.util.stream.Collectors;
 
 public class CheapTownTour {
 
-    public static Map<Integer, List<Edge>> graph = new LinkedHashMap<>();
+    public static Map<Integer, List<Edge>> graph;
 
     public static class Edge implements Comparable<Edge> {
         public int from;
@@ -28,6 +28,7 @@ public class CheapTownTour {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        graph = new LinkedHashMap<>();
 
         int nodes = Integer.parseInt(sc.nextLine());
         int edgeCount = Integer.parseInt(sc.nextLine());
@@ -50,8 +51,6 @@ public class CheapTownTour {
 
         int[] parents = new int[nodes];
 
-        Arrays.fill(parents, -1);
-
         PriorityQueue<Edge> edges = graph.values().stream().flatMap(List::stream)
                 .collect(Collectors.toCollection(PriorityQueue::new));
 
@@ -72,14 +71,6 @@ public class CheapTownTour {
 
                 forestWeight += minEdge.weight;
                 parents[secondRoot] = firstRoot;
-
-                for (int i = 0; i < parents.length; i++) {
-
-                    if (parents[i] == secondRoot) {
-
-                        parents[i] = firstRoot;
-                    }
-                }
             }
         }
 
@@ -88,13 +79,11 @@ public class CheapTownTour {
 
     private static int findRoot(int node, int[] parents) {
 
-        int root = parents[node];
+        while (parents[node] != node) {
 
-        while (parents[node] != root) {
-
-            root = parents[root];
+            node = parents[node];
         }
 
-        return root;
+        return node;
     }
 }

@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 
 public class AbaspaBasapa {
@@ -16,9 +13,8 @@ public class AbaspaBasapa {
 
         dp = new int[first.length()][second.length()];
 
-        int bestLength = -1;
+        int bestLength = 0;
         int bestRow = -1;
-        int bestCol = -1;
 
         for (int rowIndex = 0; rowIndex < first.length(); rowIndex++) {
 
@@ -33,36 +29,11 @@ public class AbaspaBasapa {
 
                     bestLength = dp[rowIndex][colIndex];
                     bestRow = rowIndex;
-                    bestCol = colIndex;
                 }
             }
         }
 
-        List<Character> result = new ArrayList<>();
-
-        while (bestRow >= 0 && bestCol >= 0 && dp[bestRow][bestCol] != 0) {
-
-            result.add(first.charAt(bestRow));
-            bestRow--;
-            bestCol--;
-
-            if (bestRow == -1 && bestCol >= 0) {
-
-                bestRow = 0;
-            }
-
-            if (bestCol == -1 && bestRow >= 0) {
-
-                bestCol = 0;
-            }
-        }
-
-        Collections.reverse(result);
-
-        for (Character character : result) {
-
-            System.out.print(character);
-        }
+        System.out.println(first.substring(bestRow - bestLength + 1, bestRow + 1));
     }
 
     private static int getPrevBest(int rowIndex, int colIndex) {

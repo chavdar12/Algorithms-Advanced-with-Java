@@ -15,24 +15,27 @@ public class Dijkstra {
 
         distances[sourceNode] = 0;
 
-        PriorityQueue<Integer> queue = new PriorityQueue<>(Comparator.comparingInt(node -> distances[node]));
+        // {node, distance} snapshots: ordering by the live distances array would corrupt the heap
+        PriorityQueue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt(entry -> entry[1]));
 
-        queue.offer(sourceNode);
+        queue.offer(new int[]{sourceNode, 0});
 
         while (!queue.isEmpty()) {
-            int parent = queue.poll();
+            int parent = queue.poll()[0];
+            if (visited[parent]) {
+                continue;
+            }
             visited[parent] = true;
             int[] children = graph[parent];
 
             for (int childNode = 0; childNode < children.length; childNode++) {
                 if (children[childNode] != 0 && !visited[childNode]) {
-                    queue.offer(childNode);
-
                     int distance = distances[parent] + graph[parent][childNode];
 
                     if (distance < distances[childNode]) {
                         distances[childNode] = distance;
                         previous[childNode] = parent;
+                        queue.offer(new int[]{childNode, distance});
                     }
                 }
             }

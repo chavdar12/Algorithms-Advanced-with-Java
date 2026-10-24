@@ -1,5 +1,5 @@
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class KruskalTests {
             resultForest[i] = minimumSpanningForest.get(i);
         }
 
-        Assert.assertArrayEquals(expectedForest, resultForest);
+        Assertions.assertArrayEquals(expectedForest, resultForest);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class KruskalTests {
             resultForest[i] = minimumSpanningForest.get(i);
         }
 
-        Assert.assertArrayEquals(expectedForest, resultForest);
+        Assertions.assertArrayEquals(expectedForest, resultForest);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class KruskalTests {
             resultForest[i] = minimumSpanningForest.get(i);
         }
 
-        Assert.assertArrayEquals(expectedForest, resultForest);
+        Assertions.assertArrayEquals(expectedForest, resultForest);
     }
 
     @Test
@@ -115,6 +115,18 @@ public class KruskalTests {
             resultForest[i] = minimumSpanningForest.get(i);
         }
 
-        Assert.assertArrayEquals(expectedForest, resultForest);
+        Assertions.assertArrayEquals(expectedForest, resultForest);
+    }
+
+    @Test
+    public void testKruskalDoesNotReorderInput() {
+        List<Edge> graphEdges = new ArrayList<>();
+        graphEdges.add(new Edge(0, 1, 5));
+        graphEdges.add(new Edge(1, 2, 1));
+        List<Edge> original = new ArrayList<>(graphEdges);
+
+        KruskalAlgorithm.kruskal(3, graphEdges);
+
+        Assertions.assertEquals(original, graphEdges);
     }
 }

@@ -80,7 +80,7 @@ public class Knapsack {
 
         int bestValue = dp[items.size()][capacity];
 
-        while (dp[items.size()][weight - 1] == bestValue) {
+        while (weight > 0 && dp[items.size()][weight - 1] == bestValue) {
 
             weight--;
         }
@@ -88,6 +88,7 @@ public class Knapsack {
         Set<Item> result = new TreeSet<>();
 
         int lastItem = items.size();
+        capacity = weight;
 
         while (lastItem > 0) {
 

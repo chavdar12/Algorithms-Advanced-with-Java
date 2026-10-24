@@ -3,9 +3,9 @@ import java.util.stream.Collectors;
 
 public class CableNetwork {
 
-    public static Map<Integer, List<Edge>> graph = new LinkedHashMap<>();
+    public static Map<Integer, List<Edge>> graph;
 
-    public static int cost = 0;
+    public static int cost;
 
     public static class Edge implements Comparable<Edge> {
 
@@ -31,6 +31,8 @@ public class CableNetwork {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        graph = new LinkedHashMap<>();
+        cost = 0;
 
         int budget = Integer.parseInt(sc.nextLine().split("\\s+")[1]);
         int nodes = Integer.parseInt(sc.nextLine().split("\\s+")[1]);
@@ -75,34 +77,19 @@ public class CableNetwork {
 
             Edge minEdge = edges.poll();
 
-            int from = minEdge.from;
-            int to = minEdge.to;
-            int weight = minEdge.weight;
-            int removedValue = -1;
+            if (minEdge.weight > budget) {
 
-            if (used[from] && !used[to]) {
-
-                used[to] = true;
-                removedValue = weight;
-            } else if (!used[from] && used[to]) {
-
-                used[from] = true;
-                removedValue = weight;
+                return false;
             }
+
+            used[minEdge.from] = used[minEdge.to] = true;
+            budget -= minEdge.weight;
+            cost += minEdge.weight;
 
             edges = graph.values()
                     .stream().flatMap(List::stream)
                     .filter(e -> (used[e.from] && !used[e.to]) || (!used[e.from] && used[e.to]))
                     .collect(Collectors.toCollection(PriorityQueue::new));
-
-            if (removedValue != -1 && budget - removedValue > 0) {
-
-                budget -= removedValue;
-                cost += removedValue;
-            } else if (budget - removedValue < 0) {
-
-                return false;
-            }
         }
 
         return true;

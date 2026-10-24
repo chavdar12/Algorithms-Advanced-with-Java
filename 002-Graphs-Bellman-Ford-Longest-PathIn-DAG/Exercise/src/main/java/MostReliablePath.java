@@ -39,13 +39,19 @@ public class MostReliablePath {
 
         distances[source] = 100.00;
 
-        PriorityQueue<Integer> queue = new PriorityQueue<>((f, s) -> Double.compare(distances[s], distances[f]));
+        // {node, reliability} snapshots: ordering by the live distances array would corrupt the heap
+        PriorityQueue<double[]> queue = new PriorityQueue<>((f, s) -> Double.compare(s[1], f[1]));
 
-        queue.offer(source);
+        queue.offer(new double[]{source, distances[source]});
 
         while (!queue.isEmpty()) {
 
-            int minNode = queue.poll();
+            int minNode = (int) queue.poll()[0];
+
+            if (visited[minNode]) {
+
+                continue;
+            }
 
             visited[minNode] = true;
 
@@ -60,9 +66,8 @@ public class MostReliablePath {
 
                         distances[i] = newDistance;
                         prev[i] = minNode;
+                        queue.offer(new double[]{i, newDistance});
                     }
-
-                    queue.offer(i);
                 }
             }
         }
@@ -90,5 +95,7 @@ public class MostReliablePath {
                 System.out.print(" -> ");
             }
         }
+
+        System.out.println();
     }
 }

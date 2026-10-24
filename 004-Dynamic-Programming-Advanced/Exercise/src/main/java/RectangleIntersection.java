@@ -184,9 +184,7 @@ public class RectangleIntersection {
 
             for (Section section : sections) {
 
-                if (section.getStart() == start
-                        || section.getEnd() == end
-                        || (section.getEnd() < end && section.getStart() > start)) {
+                if (section.getStart() >= start && section.getEnd() <= end) {
 
                     section.getHeightPoints().add(rectangle.getMinY());
                     section.getHeightPoints().add(rectangle.getMaxY());

@@ -24,6 +24,9 @@ public class ZigzagMatrix {
         int[][] maxDp = new int[rows][cols];
         int[][] prevs = new int[rows][cols];
 
+        // MIN_VALUE marks cells no zigzag path can reach; the first move goes up, so row 0 can't start
+        maxDp[0][0] = Integer.MIN_VALUE;
+
         for (int row = 1; row < rows; row++) {
 
             maxDp[row][0] = matrix[row][0];
@@ -33,7 +36,7 @@ public class ZigzagMatrix {
 
             for (int row = 0; row < rows; row++) {
 
-                int prevMax = 0;
+                int prevMax = Integer.MIN_VALUE;
 
                 if (col % 2 != 0) {
 
@@ -57,7 +60,7 @@ public class ZigzagMatrix {
                     }
                 }
 
-                maxDp[row][col] = prevMax + matrix[row][col];
+                maxDp[row][col] = prevMax == Integer.MIN_VALUE ? Integer.MIN_VALUE : prevMax + matrix[row][col];
             }
         }
 
@@ -66,7 +69,7 @@ public class ZigzagMatrix {
         int index = cols - 1;
         int rowIndex = 0;
 
-        int max = -1;
+        int max = Integer.MIN_VALUE;
 
         for (int row = 0; row < maxDp.length; row++) {
 
