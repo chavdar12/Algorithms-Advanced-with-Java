@@ -1,7 +1,7 @@
 rootProject.name = "Algorithms-Advanced-with-Java"
 
 listOf(
-    "001-Graphs-Topologica-Sorting-MST/Lab",
+    "001-Graphs-Topological-Sorting-MST/Lab",
     "002-Graphs-Bellman-Ford-Longest-PathIn-DAG/Lab",
     "002-Graphs-Bellman-Ford-Longest-PathIn-DAG/Exercise",
     "003-Graphs-Strongly-Connected-Components-Max-Flow/Lab",
