@@ -1,4 +1,5 @@
-subprojects {
+allprojects {
+    if (!file("src").isDirectory) return@allprojects
     apply(plugin = "java")
 
     repositories {
